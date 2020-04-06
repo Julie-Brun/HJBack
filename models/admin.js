@@ -1,19 +1,24 @@
 const mongoose = require('mongoose');
 
-let adminSchema = new mongoose.Schema({
+let AdminSchema = new mongoose.Schema({
     name: {
-        type: 'string',
-        required: 'You need to specify a name'
+        type: String,
+        required: [true, 'Please add a name'],
+        unique: true
     },
     email: {
-        type: 'string',
-        required: 'You need to specify a email',
+        type: String,
+        required: [true, 'Please add a email'],
         unique: true
     },
     password: {
-        type: 'string',
-        required: 'You need to specify a password'
+        type: String,
+        required: [true, 'Please add a password']
+    },
+    isSuperAdmin: {
+        type: Boolean,
+        default: false
     }
 });
 
-module.exports = mongoose.model('Admin', adminSchema);
+module.exports = mongoose.model('Admin', AdminSchema);

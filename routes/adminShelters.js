@@ -1,5 +1,6 @@
 const express = require('express');
-const { addShelter, getShelters, updateShelter } = require('../controllers/shelters');
+
+const { addShelter, getShelters, updateShelter, deleteShelter } = require('../controllers/adminShelters');
 
 const router = express.Router();
 
@@ -7,6 +8,7 @@ router
     .route('/shelters')
     .post(addShelter)
     .get(getShelters)
-    .put(updateShelter);
+    .put(updateShelter)
+    .delete(deleteShelter);
 
 module.exports = router;

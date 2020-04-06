@@ -4,7 +4,7 @@ const geoCoder = require('../utils/geocoder');
 let ShelterSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: 'You need to specify a name'
+        required: [true, 'Please add a name']
     },
     address: {
         type: String,
@@ -23,22 +23,26 @@ let ShelterSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: 'You need to specify a email'
+        required: [true, 'Please add a email']
     },
     phone01: {
         type: String,
-        required: 'You need to specify a phone number'
+        required: [true, 'Please add a phone number']
     },
     phone02: {
         type: String
     },
     description: {
         type: String,
-        required: 'You need to describe the shelter'
+        required: [true, 'Please add a description']
     },
     createdAt: {
         type: Date,
         default: Date.now()
+    },
+    deleteRequest: {
+        type: Boolean,
+        default: false
     },
     adminValidate: {
         type: Boolean,
@@ -48,6 +52,7 @@ let ShelterSchema = new mongoose.Schema({
 
 // Before saving, convert address to geoCode
 ShelterSchema.pre('save', async function(next) {
+    
     const loc = await geoCoder.geocode(this.address);
     this.location = {
         type: 'Point',
