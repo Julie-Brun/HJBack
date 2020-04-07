@@ -36,6 +36,9 @@ let ShelterSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a description']
     },
+    logo: {
+        type: String,
+    },
     createdAt: {
         type: Date,
         default: Date.now()
