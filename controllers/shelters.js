@@ -21,19 +21,19 @@ exports.getShelters = function (req, res) {
     });
 };
 
-exports.updateShelter = function (req, res) {
+exports.updateShelter = async function (req, res) {
+    const loc = await geoCoder.geocode(req.body.address);
+    
+    req.body.location = {
+        type: 'Point',
+        coordinates: [loc[0].longitude, loc[0].latitude],
+        formattedAddress: loc[0].formattedAddress
+    };
+    
     Shelter.updateOne({_id: req.body.id}, { $set: req.body, adminValidate: false }, function(err, data) {
         if (err)
             res.status(400).json(err);
         else {
-            const loc = geoCoder.geocode(data.address);
-            console.log(loc);
-            
-            // data.location = {
-            //     type: 'Point',
-            //     coordinates: [loc[0].longitude, loc[0].latitude],
-            //     formattedAddress: loc[0].formattedAddress
-            // };
             res.status(200).json(data);
         };
     });

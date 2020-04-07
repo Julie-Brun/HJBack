@@ -8,6 +8,6 @@ const options = {
     formatter: null
 };
 
-const geocoder = NodeGeoCoder(options);
+const geoCoder = NodeGeoCoder(options);
 
-module.exports = geocoder;
+module.exports = geoCoder;
