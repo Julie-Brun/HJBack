@@ -46,6 +46,25 @@ exports.getAdmins = function (req, res) {
     });
 };
 
+exports.getAdmin = function (req, res) {
+    Access.checkAccess(req.token, jwt_secret, function (err, decoded) {
+        if (err)
+        res.status(400).json(err);
+        else {
+            if (decoded.isSuperAdmin) {
+                Admin.findOne({_id: req.body.id}, function(err, data) {
+                    if (err)
+                        res.status(400).json(err);
+                    else
+                        res.status(200).json(data);
+                });
+            } else {
+                res.status(400).json(err);
+            };
+        };
+    });
+};
+
 exports.updateAdmin = function (req, res) {
     Access.checkAccess(req.token, jwt_secret, function (err, decoded) {
         if (err)

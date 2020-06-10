@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { addAdmin, getAdmins, updateAdmin, deleteAdmin } = require('../controllers/admin');
+const { addAdmin, getAdmins, getAdmin, updateAdmin, deleteAdmin } = require('../controllers/admin');
 
 const router = express.Router();
 
@@ -10,5 +10,9 @@ router
     .get(getAdmins)
     .put(updateAdmin)
     .delete(deleteAdmin);
+
+router
+    .route('/getAdmin')
+    .get(getAdmin);
 
 module.exports = router;

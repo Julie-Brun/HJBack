@@ -19,6 +19,15 @@ exports.getShelters = function (req, res) {
     });
 };
 
+exports.getShelter = function (req, res) {
+    Shelter.findOne({_id: req.query.id}, function(err, data) {
+        if (err)
+            res.status(400).json(err);
+        else
+            res.status(200).json(data);
+    });
+}
+
 exports.updateShelter = async function (req, res) {
     const loc = await geoCoder.geocode(req.body.address);
     
@@ -28,7 +37,7 @@ exports.updateShelter = async function (req, res) {
         formattedAddress: loc[0].formattedAddress
     };
     
-    Shelter.updateOne({_id: req.body.id}, { $set: req.body, adminValidate: false }, function(err, data) {
+    Shelter.updateOne({_id: req.query.id}, { $set: req.body, adminValidate: false }, function(err, data) {
         if (err)
             res.status(400).json(err);
         else {

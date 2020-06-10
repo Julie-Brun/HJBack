@@ -23,7 +23,7 @@ let ShelterSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add an email']
     },
     phone01: {
         type: String,

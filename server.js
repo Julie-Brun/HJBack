@@ -16,7 +16,7 @@ const express = require('express'),
 require('dotenv').config();
 const jwt_secret = process.env.JWT_SECRET_KEY;
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(bearerToken());
@@ -32,4 +32,4 @@ app.use('/hj2shel', adminShelters);
 app.use('/hj2adm', admin);
 
 // Mise en écoute de notre application (sur le port 3000)
-app.listen(3000);
+app.listen(3050);

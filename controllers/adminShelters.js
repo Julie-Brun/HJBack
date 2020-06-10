@@ -1,5 +1,7 @@
 const Shelter = require('../models/Shelter'),
     Access = require('../utils/access'),
+    geoCoder = require('../utils/geocoder'),
+
     jwt = require('jsonwebtoken');
 
 require('dotenv').config();
@@ -37,10 +39,18 @@ exports.getShelters = function (req, res) {
 };
 
 exports.updateShelter = function (req, res) {
-    Access.checkAccess(req.token, jwt_secret, function (err, decoded) {
+    Access.checkAccess(req.token, jwt_secret, async function (err, decoded) {
         if (err)
         res.status(400).json(err);
         else {
+            const loc = await geoCoder.geocode(req.body.address);
+    
+            req.body.location = {
+                type: 'Point',
+                coordinates: [loc[0].longitude, loc[0].latitude],
+                formattedAddress: loc[0].formattedAddress
+            };
+
             Shelter.updateOne({_id: req.body.id}, { $set: req.body }, function(err, data) {
                 if (err)
                     res.status(400).json(err);
