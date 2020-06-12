@@ -29,12 +29,14 @@ exports.getShelter = function (req, res) {
 }
 
 exports.updateShelter = async function (req, res) {
-    const loc = await geoCoder.geocode(req.body.address);
+    if(req.body.address) {
+        const loc = await geoCoder.geocode(req.body.address);
     
-    req.body.location = {
-        type: 'Point',
-        coordinates: [loc[0].longitude, loc[0].latitude],
-        formattedAddress: loc[0].formattedAddress
+        req.body.location = {
+            type: 'Point',
+            coordinates: [loc[0].longitude, loc[0].latitude],
+            formattedAddress: loc[0].formattedAddress
+        };
     };
     
     Shelter.updateOne({_id: req.query.id}, { $set: req.body, adminValidate: false }, function(err, data) {

@@ -32,6 +32,11 @@ let ShelterSchema = new mongoose.Schema({
     phone02: {
         type: String
     },
+    specializeAt: {
+        type: [String],
+        enum: ['Chiens', 'Chats', 'Rongeurs', 'Reptiles', 'Chevaux', 'Animaux de ferme', 'Autres'],
+        required: [true, 'Please select, at least, one option']
+    },
     description: {
         type: String,
         required: [true, 'Please add a description']
