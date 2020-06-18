@@ -6,6 +6,7 @@ const express = require('express'),
     jwt = require('jsonwebtoken'),
     cors = require('cors'),
     bearerToken = require('express-bearer-token'),
+    path = require('path'),
     app = express(),
 
     shelters = require('./routes/shelters'),
@@ -15,12 +16,13 @@ const express = require('express'),
 
 require('dotenv').config();
 const jwt_secret = process.env.JWT_SECRET_KEY;
+const publicPath = path.resolve(__dirname, '/uploads');
 
+app.use('/uploads/', express.static(publicPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(bearerToken());
-app.use(express.static(__dirname + '/uploads'));
 
 // Initialisation de la connexion a la base de données
 mongoose.connect('mongodb://localhost/hopesjourney', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});

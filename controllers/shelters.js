@@ -2,7 +2,18 @@ const Shelter = require('../models/Shelter');
 const geoCoder = require('../utils/geocoder');
 
 exports.addShelter = function (req, res) {
-    Shelter.create(req.body, function(err, newShelter) {        
+    const shelter = {
+        name: req.body.name,
+        logo: req.file.path,
+        specializeAt: req.body.specializeAt,
+        address: req.body.address,
+        email: req.body.email,
+        phone01: req.body.phone01,
+        phone02: req.body.phone02,
+        description: req.body.description
+    };
+
+    Shelter.create(shelter, function(err, newShelter) {        
         if (err)
             res.status(400).json(err);
         else

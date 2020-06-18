@@ -8,9 +8,9 @@ const router = express.Router();
 
 router
     .route('/shelters')
-    .post(upload.single('media'), addShelter)
+    .post(upload.single('logo'), addShelter)
     .get(getShelters)
-    .put(upload.single('media'), updateShelter)
-    .delete(deleteShelter);
+    .put(upload.single('logo'), updateShelter)
+    .delete(deleteShelter)
 
 module.exports = router;
