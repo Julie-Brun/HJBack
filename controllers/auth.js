@@ -7,6 +7,7 @@ require('dotenv').config();
 const jwt_secret = process.env.JWT_SECRET_KEY;
 
 exports.login = function (req, res) {
+    console.log(req.body);
     Admin.findOne({name : req.body.name}, function(err, admin) {
         if (admin) {
             bcrypt.compare(req.body.password, admin.password, function(err, result) {

@@ -34,7 +34,8 @@ let ShelterSchema = new mongoose.Schema({
     },
     specializeAt: {
         type: [String],
-        enum: ['Chiens', 'Chats', 'Rongeurs', 'Reptiles', 'Chevaux', 'Animaux de ferme', 'Autres'],
+        // enum: ['Chiens', 'Chats', 'Rongeurs', 'Oiseaux', 'Reptiles', 'Chevaux', 'Animaux de ferme', 'Autres'],
+        trim: true,
         required: [true, 'Please select, at least, one option']
     },
     description: {

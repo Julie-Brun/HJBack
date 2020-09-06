@@ -1,11 +1,17 @@
 const Shelter = require('../models/Shelter');
 const geoCoder = require('../utils/geocoder');
+const { json } = require('express');
 
 exports.addShelter = function (req, res) {
+    const specializeAt = req.body.specializeAt ? JSON.parse([req.body.specializeAt]) : req.body.specializeAt;    
+    console.log(req.body);
+
+    const defaultFile = req.file ? req.file.path : "uploads/NoLogo.png";
+
     const shelter = {
         name: req.body.name,
-        logo: req.file.path,
-        specializeAt: req.body.specializeAt,
+        logo: defaultFile,
+        specializeAt: specializeAt,
         address: req.body.address,
         email: req.body.email,
         phone01: req.body.phone01,
@@ -25,8 +31,16 @@ exports.getShelters = function (req, res) {
     Shelter.find({}, function(err, data) {
         if (err) 
             res.status(400).json(err);
-        else 
-            res.status(200).json(data);
+        else {
+            const shelterArray = []
+            for (let i = 0; i < data.length; i++) {
+                if(data[i].adminValidate === true) {
+                    const validShelter = data[i];
+                    shelterArray.push(validShelter);
+                };
+            };
+            res.status(200).json(shelterArray);
+        };     
     });
 };
 

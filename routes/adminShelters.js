@@ -2,7 +2,7 @@ const express = require('express'),
     multer = require('multer'),
     upload = multer({ dest: 'uploads/' });
 
-const { addShelter, getShelters, updateShelter, deleteShelter } = require('../controllers/adminShelters');
+const { addShelter, getShelters, updateShelter, deleteShelter, validateShelter } = require('../controllers/adminShelters');
 
 const router = express.Router();
 
@@ -12,5 +12,9 @@ router
     .get(getShelters)
     .put(upload.single('logo'), updateShelter)
     .delete(deleteShelter)
+
+router
+    .route('/shelters/validate')
+    .put(validateShelter)
 
 module.exports = router;

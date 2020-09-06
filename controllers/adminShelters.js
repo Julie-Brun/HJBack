@@ -38,17 +38,38 @@ exports.getShelters = function (req, res) {
     });
 };
 
+exports.validateShelter = function (req, res) {
+    Access.checkAccess(req.token, jwt_secret, async function (err, decoded) {
+        if (err)
+        res.status(400).json(err);
+        else {
+            Shelter.updateOne({_id: req.body.id}, { adminValidate: req.body.adminValidate }, function(err, data) {
+                if (err)
+                    res.status(400).json(err);
+                else
+                    res.status(200).json(data);
+            });
+        };
+    });
+};
+
 exports.updateShelter = function (req, res) {
     Access.checkAccess(req.token, jwt_secret, async function (err, decoded) {
         if (err)
         res.status(400).json(err);
         else {
-            const loc = await geoCoder.geocode(req.body.address);
+            if(req.body.address) {
+                const loc = await geoCoder.geocode(req.body.address);
     
-            req.body.location = {
-                type: 'Point',
-                coordinates: [loc[0].longitude, loc[0].latitude],
-                formattedAddress: loc[0].formattedAddress
+                req.body.location = {
+                    type: 'Point',
+                    coordinates: [loc[0].longitude, loc[0].latitude],
+                    formattedAddress: loc[0].formattedAddress
+                };
+            };
+
+            if(req.body.specializeAt) {
+                req.body.specializeAt = JSON.parse([req.body.specializeAt])
             };
 
             Shelter.updateOne({_id: req.body.id}, { $set: req.body }, function(err, data) {
