@@ -46,13 +46,32 @@ exports.getAdmins = function (req, res) {
     });
 };
 
-exports.getAdmin = function (req, res) {
+// exports.getAdmin = function (req, res) {
+//     Access.checkAccess(req.token, jwt_secret, function (err, decoded) {
+//         if (err)
+//         res.status(400).json(err);
+//         else {
+//             if (decoded.isSuperAdmin) {
+//                 Admin.findOne({_id: req.body.id}, function(err, data) {
+//                     if (err)
+//                         res.status(400).json(err);
+//                     else
+//                         res.status(200).json(data);
+//                 });
+//             } else {
+//                 res.status(400).json(err);
+//             };
+//         };
+//     });
+// };
+
+exports.updateAdmin = function (req, res) {
     Access.checkAccess(req.token, jwt_secret, function (err, decoded) {
         if (err)
         res.status(400).json(err);
         else {
             if (decoded.isSuperAdmin) {
-                Admin.findOne({_id: req.body.id}, function(err, data) {
+                Admin.updateOne({_id: req.body.id}, { $set: req.body }, function(err, data) {
                     if (err)
                         res.status(400).json(err);
                     else
@@ -65,13 +84,15 @@ exports.getAdmin = function (req, res) {
     });
 };
 
-exports.updateAdmin = function (req, res) {
+exports.updatePasswordAdmin = function (req, res) {
     Access.checkAccess(req.token, jwt_secret, function (err, decoded) {
         if (err)
         res.status(400).json(err);
         else {
             if (decoded.isSuperAdmin) {
-                Admin.updateOne({_id: req.body.id}, { $set: req.body }, function(err, data) {
+                let hash = bcrypt.hashSync(req.body.password, 10);
+                req.body.password = hash;
+                Admin.updateOne({_id: req.body.id}, { password: req.body.password }, function(err, data) {
                     if (err)
                         res.status(400).json(err);
                     else
